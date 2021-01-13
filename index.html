@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>React Sports Game</title>
+</head>
+<body>
+      
+      
+      <!--1.empty element-->
+      <div id="root"></div>
+    
+      <!--react library-->
+  <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js" ></script>
+      <!--React Dom-->
+  <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" ></script>
+      <!--Babel-->
+  <script crossorigin src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <script type="text/babel">
+
+class Team extends React.Component{
+     constructor(props){
+       super(props)
+
+
+       this.state ={
+         shots: 0,
+         score: 0
+       }
+
+     this.shotSound = new Audio('Audi1.mp3')
+     this.scoreSound = new Audio('Audio2.mp3')
+
+     }
+       shotHandler = () =>{
+
+        let score = this.state.score
+        this.shotSound.play()
+
+        if(Math.random()>0.35) {
+          score += 1
+
+          setTimeout(()=>{
+
+          
+          this.scoreSound.play()
+        }, 100)
+        }
+         this.setState((state,props)=>({
+           shots: state.shots + 1,
+           score
+         }))
+       }
+
+
+
+     render(){
+
+      let shotPercentageDiv
+       if(this.state.shots){
+       const shotPercentage = Math.round((this.state.score/ this.state.shots)*100)
+         shotPercentageDiv = ( 
+               <div>
+                 <strong> shooting %:{shotPercentage}</strong>
+                </div>)
+       }
+       return(
+         <div className="Team">
+          <h3>{this.props.name}</h3>
+        
+          <div className="style-me">
+            <img src={this.props.logo} alt={this.props.name}/>
+            </div >
+            <div>
+              <em>Shots:</em>{this.state.shots}
+              </div>
+              <div>
+                
+                <strong>Scores:</strong>{this.state.score}
+                </div>
+
+               {shotPercentageDiv}
+
+                <button onClick ={this.shotHandler}>Shoot!</button>
+          </div>
+       )
+     }
+   } 
+   
+   function Game(props){
+     return(
+       <div className ="Game">
+        <h1>Welcome to: {props.venue}</h1>
+    <div className="stats">
+        <Team 
+        name= {props.visitingTeam.name}
+        logo={props.visitingTeam.logoSrc}
+        />
+
+        <div className="versus">
+          <h1>VS</h1>
+          </div>
+        
+        <Team 
+        name= {props.homeTeam.name}
+        logo={props.homeTeam.logoSrc}
+        />
+       </div>
+       </div>
+      )
+  
+   }
+
+   
+   
+   
+   function App(props) {
+
+    const kenzie ={
+      name:'fhn1',
+      logoSrc:'./image1.jpg'
+    }
+
+    const oasis ={
+      name:'bhn1',
+      logoSrc: './image2.jpg'
+      
+    }
+
+     const lion ={
+       name: 'Monkey',
+       logoSrc:'./pic1.svg'
+     }
+
+     const tiger ={
+       name:'Donkey',
+       logoSrc:'./pic2.svg'
+     }
+
+
+     return(
+       <div className="App">
+        <Game
+         venue ="fhn2"
+         homeTeam ={oasis}
+         visitingTeam ={kenzie}
+         
+         />
+        <Game 
+        venue ="bhn2"
+        homeTeam ={lion}
+        visitingTeam ={tiger}
+        
+        
+        />
+      </div>
+     )
+    }
+    
+    ReactDOM.render(
+      <App />,
+      document.getElementById('root')
+       
+    )
+    
+    </script>
+    </body>
+    </html>
+
+
+
+
+
+    
